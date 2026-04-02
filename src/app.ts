@@ -1,6 +1,8 @@
 import { Elysia } from 'elysia';
 import { userRoute } from './route/user.route';
+import { authRoute } from './route/auth.route';
 
 export const app = new Elysia()
     .get('/', () => 'Server is running!')
-    .use(userRoute);
+    .use(userRoute)
+    .use(authRoute);
