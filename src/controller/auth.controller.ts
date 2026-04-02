@@ -24,4 +24,18 @@ export class AuthController {
             };
         }
     }
+
+    static async logout({ token, set }: any) {
+        try {
+            await AuthService.logout(token);
+            return {
+                data: "OK"
+            };
+        } catch (error: any) {
+            set.status = 401;
+            return {
+                message: "Unauthorized"
+            };
+        }
+    }
 }

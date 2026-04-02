@@ -61,4 +61,14 @@ export class AuthService {
 
         return results[0];
     }
+
+    static async logout(token: string) {
+        const result = await db.delete(sessions).where(eq(sessions.token, token));
+        
+        // result for mysql2 driver is [ResultSetHeader, undefined]
+        // we check affectedRows to see if any session was actually deleted
+        if ((result[0] as any).affectedRows === 0) {
+            throw new Error('Unauthorized');
+        }
+    }
 }
