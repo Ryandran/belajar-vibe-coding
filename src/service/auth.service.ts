@@ -40,4 +40,25 @@ export class AuthService {
 
         return results[0];
     }
+
+    static async getCurrentUser(token: string) {
+        // 1. Cari session and join with users
+        const results = await db.select({
+            id: users.id,
+            username: users.username,
+            email: users.email,
+            createdAt: users.createdAt,
+            updatedAt: users.updatedAt
+        })
+        .from(sessions)
+        .innerJoin(users, eq(sessions.userId, users.id))
+        .where(eq(sessions.token, token))
+        .limit(1);
+
+        if (results.length === 0) {
+            throw new Error('Token is not valid');
+        }
+
+        return results[0];
+    }
 }
