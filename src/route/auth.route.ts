@@ -6,8 +6,8 @@ import { authPlugin } from '../middleware/auth.middleware';
 export const authRoute = new Elysia({ prefix: '/api/users' })
     .post('/login', AuthController.login, {
         body: t.Object({
-            email: t.String(),
-            password: t.String()
+            email: t.String({ maxLength: 255, pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$' }),
+            password: t.String({ maxLength: 255 })
         })
     })
     .group('', (app) => 
