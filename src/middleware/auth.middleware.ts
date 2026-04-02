@@ -1,27 +1,26 @@
 import { Elysia } from 'elysia';
+import { AuthService } from '../service/auth.service';
+import { UnauthorizedError } from '../utils/error';
 
 export const authPlugin = (app: Elysia) => 
-    app.derive(({ headers, set }) => {
+    app.derive(async ({ headers }) => {
         const authHeader = headers.authorization || headers.Authorization;
         
-        if (!authHeader) {
-            set.status = 401;
-            throw new Error('Token is not valid');
-        }
-
-        if (!authHeader.startsWith('Bearer ')) {
-            set.status = 401;
-            throw new Error('Token is not valid');
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            throw new UnauthorizedError('Token is not valid');
         }
 
         const token = authHeader.split(' ')[1];
 
         if (!token) {
-            set.status = 401;
-            throw new Error('Token is not valid');
+            throw new UnauthorizedError('Token is not valid');
         }
 
+        // Validate token and get user from database
+        const user = await AuthService.getCurrentUser(token);
+
         return {
+            user,
             token
         };
     });
