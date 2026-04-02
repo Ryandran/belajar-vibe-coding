@@ -2,6 +2,7 @@ import { eq, or } from 'drizzle-orm';
 import { db } from '../config/db.config';
 import { users } from '../model/user.model';
 import { hashPassword } from '../utils/password.util';
+import { BadRequestError } from '../utils/error';
 
 export class UserService {
     static async createUser(data: typeof users.$inferInsert) {
@@ -14,7 +15,7 @@ export class UserService {
         );
         
         if (existingUsers.length > 0) {
-            throw new Error('User already exists');
+            throw new BadRequestError('User already exists');
         }
 
         // Hash password

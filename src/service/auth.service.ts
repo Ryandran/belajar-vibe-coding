@@ -3,6 +3,7 @@ import { db } from '../config/db.config';
 import { users } from '../model/user.model';
 import { sessions } from '../model/session.model';
 import { verifyPassword } from '../utils/password.util';
+import { BadRequestError, UnauthorizedError } from '../utils/error';
 
 export class AuthService {
     static async login(email: string, password: string) {
@@ -10,13 +11,13 @@ export class AuthService {
         const [user] = await db.select().from(users).where(eq(users.email, email));
 
         if (!user) {
-            throw new Error('email or password is wrong');
+            throw new BadRequestError('email or password is wrong');
         }
 
         // 2. Verifikasi password
         const isPasswordValid = await verifyPassword(password, user.password);
         if (!isPasswordValid) {
-            throw new Error('email or password is wrong');
+            throw new BadRequestError('email or password is wrong');
         }
 
         // 3. Generate UUID token
@@ -56,7 +57,7 @@ export class AuthService {
         .limit(1);
 
         if (results.length === 0) {
-            throw new Error('Token is not valid');
+            throw new UnauthorizedError('Token is not valid');
         }
 
         return results[0];
@@ -68,7 +69,7 @@ export class AuthService {
         // result for mysql2 driver is [ResultSetHeader, undefined]
         // we check affectedRows to see if any session was actually deleted
         if ((result[0] as any).affectedRows === 0) {
-            throw new Error('Unauthorized');
+            throw new UnauthorizedError();
         }
     }
 }
