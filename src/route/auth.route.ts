@@ -13,4 +13,5 @@ export const authRoute = new Elysia({ prefix: '/api/users' })
     .group('', (app) => 
         app.use(authPlugin)
            .get('/current-user', UserController.getCurrent)
+           .delete('/logout', AuthController.logout)
     );
