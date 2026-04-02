@@ -18,6 +18,12 @@ export const app = new Elysia()
                 data: null
             };
         }
+        if (code === 'VALIDATION') {
+            set.status = 400;
+            return {
+                message: 'Validation failed'
+            };
+        }
         
         console.error(error);
         set.status = 500;
