@@ -5,6 +5,7 @@ A robust and modern backend REST API service built for authentication and user m
 ## 🚀 Tech Stack & Libraries
 - **Runtime**: [Bun](https://bun.sh/) – A fast all-in-one JavaScript runtime.
 - **Framework**: [ElysiaJS](https://elysiajs.com/) – An ergonomic, high-performance web framework for Bun.
+- **API Documentation**: [Swagger UI](https://elysiajs.com/plugins/swagger.html) – Interactive API documentation and testing interface.
 - **ORM**: [Drizzle ORM](https://orm.drizzle.team/) – A lightweight and type-safe TypeScript ORM.
 - **Database**: MySQL (via `mysql2` driver).
 - **Testing**: `bun test` – Bun's built-in, extremely fast test runner.
@@ -109,6 +110,26 @@ Base URL mapping defaults to `localhost` with the respective development port.
 - **Headers**:
    - `Authorization: Bearer <token>`
 - **Response**: `200 OK` ("OK") / `401 Unauthorized`
+
+## 📖 API Documentation (Swagger UI)
+
+This project features an interactive Swagger UI documentation that allows developers to explore and test the API directly from the browser.
+
+### Features
+- **Interactive Testing**: Execute API calls directly from the UI.
+- **Schema Visualization**: Understand the required body payloads and response structures.
+- **Authentication Support**: Built-in support for Bearer Token authentication.
+
+### How to Access
+1. Start the server (e.g., `bun run dev`).
+2. Open your browser and navigate to: `http://localhost:<PORT>/swagger`
+   - *Example: `http://localhost:3000/swagger`*
+
+### How to Use Auth
+1. Obtain a token by calling the **Login** API.
+2. Click the **"Authorize"** padlock button in the Swagger UI.
+3. Enter your token (Prefix with `Bearer ` if necessary, though the UI is configured for standard Bearer format).
+4. Click **Authorize** and then **Close**. You can now test protected endpoints!
 
 ## ⚙️ Project Setup
 
